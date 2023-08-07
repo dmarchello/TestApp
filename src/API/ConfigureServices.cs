@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API.Filters;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 using TestApp.Infrastructure.Persistence;
 using ZymLabs.NSwag.FluentValidation;
 
@@ -24,12 +28,28 @@ public static class ConfigureServices
 
             return new FluentValidationSchemaProcessor(provider, validationRules, loggerFactory);
         });
+        
+        services.AddAuthentication("BasicAuthentication")
+            .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
         // Customise default API behaviour
         services.Configure<ApiBehaviorOptions>(options =>
             options.SuppressModelStateInvalidFilter = true);
 
-        services.AddSwaggerDocument();
+        services.AddOpenApiDocument(config =>
+        {
+            config.Title = "My API";
+            config.Description = "An API for my project.";
+    
+            // To add Basic Authentication
+            config.AddSecurity("basic", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+            {
+                Type = OpenApiSecuritySchemeType.Basic,
+                Description = "Basic Authentication"
+            });
+    
+            config.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("basic"));
+        });
 
         return services;
     }

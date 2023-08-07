@@ -35,8 +35,8 @@ public class RectanglesController : ApiControllerBase
     }
     
     [HttpGet("all")]
-    public async Task<ActionResult<List<RectangleDto>>> GetRectangles([FromQuery] GetRectanglesQuery query)
+    public async Task<ActionResult<List<RectangleDto>>> GetRectangles()
     {
-        return await Mediator.Send(query);
+        return await Mediator.Send(new GetRectanglesQuery());
     }
 }
