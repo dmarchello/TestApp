@@ -19,20 +19,11 @@ public class GetRectangleTests : BaseTestFixture
     }
 
     [Test]
-    public async Task ShouldThrowValidationExceptionWhenCoordinatesNotSet()
-    {
-        GetRectanglesByCoordinateQuery query = new GetRectanglesByCoordinateQuery();
-
-        await FluentActions.Invoking(() =>
-            SendAsync(query)).Should().ThrowAsync<ValidationException>();
-    }
-
-    [Test]
     public async Task ShouldThrowValidationExceptionWhenCoordinatesAreDefault()
     {
         GetRectanglesByCoordinateQuery query = new()
         {
-            Coordinate = new CoordinateDto { X = 0, Y = 0 }
+             X = 0, Y = 0 
         };
 
         await FluentActions.Invoking(() =>

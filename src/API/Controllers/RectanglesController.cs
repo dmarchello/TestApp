@@ -10,9 +10,26 @@ public class RectanglesController : ApiControllerBase
     {
         return await Mediator.Send(query);
     }
-    
-    [HttpGet("by-coordinates")]
-    public async Task<ActionResult<List<RectangleVm>>> GetRectanglesByCoordinate([FromQuery] GetRectanglesByMultipleCoordinateQuery query)
+
+    // Test request
+//     {
+//     "coordinates": [
+//     {
+//         "x": 100,
+//         "y": 100
+//     },
+//     {
+//         "x": 200,
+//         "y": 200
+//     },
+//     {
+//         "x": 300,
+//         "y": 300
+//     }
+//     ]
+//      }'
+    [HttpPost("by-coordinates")]
+    public async Task<ActionResult<List<RectangleVm>>> GetRectanglesByCoordinate([FromBody]GetRectanglesByMultipleCoordinateQuery query)
     {
         return await Mediator.Send(query);
     }
